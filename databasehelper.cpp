@@ -116,7 +116,7 @@ bool DataBase::createTable()
                    ATTR_RECORDS_DATE_OF_RECORD	" TEXT NOT NULL,"
                    ATTR_RECORDS_SYMPTOMS " TEXT NOT NULL, "
                    ATTR_RECORDS_PATIENT_SEX "	TEXT NOT NULL, "
-                   "PRIMARY KEY(" ATTR_RECORDS_DATE_OF_RECORD "," ATTR_RECORDS_PATIENT_FIO ")"
+                   "PRIMARY KEY(" ATTR_RECORDS_DATE_OF_RECORD "," ATTR_RECORDS_PATIENT_FIO ", " ATTR_RECORDS_DATE_OF_RECORD ")"
                    )){
             qDebug() << "DataBase: error of create " << TABLE_USERS;
             qDebug() << query.lastError().text();

@@ -33,7 +33,7 @@ public:
 private:
     QList<TreeItem*> m_childItems;
     DeseaseItem m_itemData;
-    TreeItem *m_parentItem;
+    TreeItem *m_parentItem = nullptr;
 };
 
 

@@ -81,32 +81,36 @@ void MenuWindow::logoutClicked(){
 }
 
 void MenuWindow::downloadClicked(){
-    QSqlQuery records;
-    records.exec("SELECT * FROM " TABLE_RECORDS);
+    QSqlQuery recordsQuery;
+    recordsQuery.exec("SELECT * FROM " TABLE_RECORDS);
     QJsonArray result = QJsonArray();
-    while(records.next()){
+    while(recordsQuery.next()){
         QJsonObject record = QJsonObject();
 
         QJsonObject doctor = QJsonObject();
-        doctor.insert(ATTR_RECORDS_DOCTOR_FIO, record.value(ATTR_RECORDS_DOCTOR_FIO).toString());
-        doctor.insert(ATTR_RECORDS_HOSPITAL_NAME, record.value(ATTR_RECORDS_HOSPITAL_NAME).toString());
-        doctor.insert(ATTR_RECORDS_CITY, record.value(ATTR_RECORDS_CITY).toString());
-        doctor.insert(ATTR_RECORDS_DISTRICT, record.value(ATTR_RECORDS_DISTRICT).toString());
+        doctor.insert("name", recordsQuery.value(ATTR_RECORDS_DOCTOR_FIO).toString());
+        doctor.insert("place", recordsQuery.value(ATTR_RECORDS_HOSPITAL_NAME).toString());
+        doctor.insert(ATTR_RECORDS_CITY, recordsQuery.value(ATTR_RECORDS_CITY).toString());
+        doctor.insert(ATTR_RECORDS_DISTRICT, recordsQuery.value(ATTR_RECORDS_DISTRICT).toString());
         record.insert("doctor", doctor);
 
         QJsonObject patient;
-        patient.insert(ATTR_RECORDS_PATIENT_FIO, record.value(ATTR_RECORDS_PATIENT_FIO).toString());
-        patient.insert(ATTR_RECORDS_PATIENT_SEX, record.value(ATTR_RECORDS_PATIENT_SEX).toString());
-        patient.insert(ATTR_RECORDS_DATE_OF_BIRTH, record.value(ATTR_RECORDS_DATE_OF_BIRTH).toString());
+        patient.insert("name", recordsQuery.value(ATTR_RECORDS_PATIENT_FIO).toString());
+        patient.insert(ATTR_RECORDS_PATIENT_SEX, recordsQuery.value(ATTR_RECORDS_PATIENT_SEX).toString());
+        patient.insert(ATTR_RECORDS_DATE_OF_BIRTH, recordsQuery.value(ATTR_RECORDS_DATE_OF_BIRTH).toString());
+        patient.insert("date", recordsQuery.value(ATTR_RECORDS_DATE_OF_RECORD).toString());
         record.insert("patient", patient);
 
-        record.insert(ATTR_RECORDS_DATE_OF_RECORD, record.value(ATTR_RECORDS_DATE_OF_RECORD).toString());
-        QStringList symptoms = record.value(ATTR_RECORDS_SYMPTOMS).toString().split(",");
+
+        QStringList symptoms = recordsQuery.value(ATTR_RECORDS_SYMPTOMS).toString().split(",");
         QJsonArray symptomsArray = QJsonArray();
+        QJsonObject symptomObject = QJsonObject();
         QString symptom;
         foreach(symptom, symptoms){
-            symptomsArray.append(symptom);
+            QStringList values = symptom.split("=>");
+            symptomObject.insert(values.first(), values.last());
         }
+        symptomsArray.append(symptomObject);
         record.insert("records", symptomsArray);
         result.append(record);
     }
