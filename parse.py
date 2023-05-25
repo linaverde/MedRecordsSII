@@ -29,7 +29,7 @@ meta_ignore_set = {
 }
 
 separator_by_meta = {
-    "Характеристика" : "   =>   "
+    "Характеристика" : "|"
 }
 
 def get_separator_by_meta(meta):
@@ -70,31 +70,33 @@ def parse(arg_complaints):
 
 
 if __name__ == "__main__":
-    # arg_parser = argparse.ArgumentParser(allow_abbrev=False)
+    arg_parser = argparse.ArgumentParser(allow_abbrev=False)
 
-    # arg_parser.add_argument(
-    #     '-i', '--input',
-    #     dest='input',
-    #     required=True,
-    #     type=str,
-    #     help="path to the json file to parse"
-    # )
+    arg_parser.add_argument(
+        '-i', '--input',
+        dest='input',
+        required=True,
+        type=str,
+        help="path to the json file to parse"
+    )
 
-    # args = arg_parser.parse_args()
+    arg_parser.add_argument(
+        '-o', '--output',
+        dest='output',
+        required=True,
+        type=str,
+        help="path to the parsed ddbf file"
+    )
 
-    # input_dir = os.path.dirname(args.input)
-    # if input_dir != "" and not os.path.isdir(input_dir):
-    #     print('Directory \"{}\" doesn\'t exist'.format(input_dir))
-    #     exit(-1)
+    args = arg_parser.parse_args()
 
-    finput = "./complaints.json"
-
-    with open(finput, "r", encoding="UTF-8") as f:
+    with open(args.input, "r", encoding="UTF-8") as f:
         complaints = json.load(f)
 
     results = parse(complaints)
 
-    with open(r'parsed.txt', 'w') as fp:
+    with open(args.output, 'w', encoding="UTF-8") as f:
         for item in results:
-            fp.write("%s\n" % item)
-        print('Done')
+            f.write("%s\n" % item)
+
+    exit(0)

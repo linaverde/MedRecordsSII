@@ -46,26 +46,10 @@ void MenuWindow::setUser(UserEntity user){
 
 void MenuWindow::loadClicked(){
     QString filename = QFileDialog::getOpenFileName(this,
-             tr("Open model file"), QDir::currentPath(), tr("TXT files (*.txt)"));
-        QFile model(filename);
+                                                    tr("Open model file"), QDir::currentPath(), tr("JSON files (*.json)"));
 
-        model.open(QIODevice::ReadOnly|QIODevice::Text);
-        QByteArray data = model.readAll();
-        model.close();
-
-            QString saveFileName = DESEASE_FILENAME;
-            QFileInfo fileInfo(saveFileName);
-
-            QDir::setCurrent(fileInfo.path());
-
-            QFile newFile(saveFileName);
-            if (!newFile.open(QIODevice::WriteOnly))
-            {
-                return;
-            }
-
-            newFile.write(data);
-            newFile.close();
+    QString cmd = "python3.exe ./parse.py -i " + filename + " -o ./" + DESEASE_FILENAME;
+    system(cmd.toStdString().c_str());
 }
 
 void MenuWindow::patientClicked(){

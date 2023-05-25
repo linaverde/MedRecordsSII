@@ -20,21 +20,21 @@ AddPatientInfoDialog::AddPatientInfoDialog(QWidget *parent) :
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(onCancelClicked()));
     connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(onSaveClicked()));
 
-    listGroupDesease->move(20, 400);
-    listGroupDesease->resize(360, 620);
+    listGroupDesease->move(20, 430);
+    listGroupDesease->resize(360, 220);
     listGroupDesease->show();
 
 
-    listSymptoms->move(410, 400);
-    listSymptoms->resize(360, 620);
+    listSymptoms->move(410, 430);
+    listSymptoms->resize(360, 220);
     listSymptoms->show();
 
-    listSymptomsValue->move(810, 400);
-    listSymptomsValue->resize(360, 620);
+    listSymptomsValue->move(810, 430);
+    listSymptomsValue->resize(360, 220);
     listSymptomsValue->show();
 
-    listSelected->move(1210, 70);
-    listSelected->resize(411, 951);
+    listSelected->move(810, 70);
+    listSelected->resize(360, 300);
     listSelected->show();
 }
 
@@ -55,7 +55,7 @@ bool AddPatientInfoDialog::getDesiasesData() {
     };
 
     QTextStream in(&file);
-    in.setCodec("UTF-8");
+    in.setEncoding(QStringConverter::Utf8);
 
 
     while(!in.atEnd()){
